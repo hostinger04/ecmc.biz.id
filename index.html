@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZALLSTORE REAL - Marketplace Akun Game Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="assets/images/logo.png">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="logo-animation">
+            <img src="assets/images/logo.png" alt="ZALLSTORE REAL">
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="ZALLSTORE REAL">
+                <span>ZALLSTORE <span class="highlight">REAL</span></span>
+            </div>
+            <div class="user-actions">
+                <div class="saldo-indicator" id="saldoIndicator">
+                    <span>Saldo: Rp0</span>
+                </div>
+                <button class="btn-notification" id="btnNotification">
+                    <i class="icon-bell"></i>
+                    <span class="badge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Hero Banner -->
+            <section class="hero-banner">
+                <div class="hero-text">
+                    <h1>Akun Game Premium dengan Harga Terbaik</h1>
+                    <p>Jual, beli, sewa akun game dan top-up saldo dengan aman</p>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Cari akun game...">
+                        <button class="btn-search">Cari</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Game Categories -->
+            <section class="game-categories">
+                <h2>Kategori Populer</h2>
+                <div class="category-list">
+                    <div class="category-item" data-game="freefire">
+                        <img src="assets/images/freefire-icon.png" alt="Free Fire">
+                        <span>Free Fire</span>
+                    </div>
+                    <div class="category-item" data-game="mlbb">
+                        <img src="assets/images/mlbb-icon.png" alt="Mobile Legends">
+                        <span>MLBB</span>
+                    </div>
+                    <div class="category-item" data-game="pubg">
+                        <img src="assets/images/pubg-icon.png" alt="PUBG Mobile">
+                        <span>PUBG</span>
+                    </div>
+                    <div class="category-item" data-game="genshin">
+                        <img src="assets/images/genshin-icon.png" alt="Genshin Impact">
+                        <span>Genshin</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Account Listings -->
+            <section class="account-listings">
+                <div class="section-header">
+                    <h2>Akun Tersedia</h2>
+                    <div class="filter-options">
+                        <select id="gameFilter">
+                            <option value="all">Semua Game</option>
+                            <option value="freefire">Free Fire</option>
+                            <option value="mlbb">Mobile Legends</option>
+                            <option value="pubg">PUBG Mobile</option>
+                        </select>
+                        <select id="statusFilter">
+                            <option value="all">Semua Status</option>
+                            <option value="available">Available</option>
+                            <option value="sold">Terjual</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="account-grid" id="accountGrid">
+                    <!-- Account cards will be populated by JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" data-target="home">
+            <i class="icon-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item" data-target="info">
+            <i class="icon-info"></i>
+            <span>Informasi</span>
+        </a>
+        <a href="#" class="nav-item" data-target="account">
+            <i class="icon-user"></i>
+            <span>Akun</span>
+        </a>
+    </nav>
+
+    <!-- Account Detail Modal -->
+    <div class="modal" id="accountModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="account-images">
+                    <img id="modalAccountImage" src="" alt="Account Preview">
+                </div>
+                <div class="account-details">
+                    <h3 id="modalAccountName"></h3>
+                    <div class="detail-row">
+                        <span class="detail-label">Game:</span>
+                        <span id="modalGame" class="detail-value"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Username:</span>
+                        <span id="modalUsername" class="detail-value"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status Bind:</span>
+                        <span id="modalBind" class="detail-value"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Rank:</span>
+                        <span id="modalRank" class="detail-value"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Harga:</span>
+                        <span id="modalPrice" class="detail-value price"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status:</span>
+                        <span id="modalStatus" class="detail-value status-available"></span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-buy" id="btnBuy">Beli Akun</button>
+                        <button class="btn-rent" id="btnRent">Sewa Akun</button>
+                        <button class="btn-topup" id="btnTopup">Top-Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content payment-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <h3>Pembayaran</h3>
+                <div class="payment-steps">
+                    <div class="step active" id="step1">
+                        <h4>Transfer Pembayaran</h4>
+                        <div class="payment-methods">
+                            <div class="payment-qr">
+                                <img src="assets/qr/payment-qr.png" alt="QRIS Payment">
+                                <p>Scan QRIS untuk pembayaran</p>
+                            </div>
+                            <div class="bank-transfer">
+                                <h5>Transfer Bank</h5>
+                                <div class="bank-details">
+                                    <div class="bank-item">
+                                        <img src="assets/images/bca-logo.png" alt="BCA">
+                                        <div>
+                                            <p>1234567890</p>
+                                            <p>PT ZALLSTORE REAL</p>
+                                        </div>
+                                    </div>
+                                    <div class="bank-item">
+                                        <img src="assets/images/bri-logo.png" alt="BRI">
+                                        <div>
+                                            <p>9876543210</p>
+                                            <p>PT ZALLSTORE REAL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment-rules">
+                            <h5>Peraturan Pembayaran:</h5>
+                            <ul>
+                                <li>Transfer sesuai nominal yang tertera</li>
+                                <li>Sertakan kode unik jika ada</li>
+                                <li>Simpan bukti transfer untuk verifikasi</li>
+                                <li>Pembayaran akan diverifikasi dalam 1x24 jam</li>
+                            </ul>
+                        </div>
+                        <button class="btn-next" id="btnNext1">Lanjutkan</button>
+                    </div>
+                    <div class="step" id="step2">
+                        <h4>Upload Bukti Pembayaran</h4>
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="paymentProof" accept="image/*">
+                            <label for="paymentProof">
+                                <i class="icon-upload"></i>
+                                <p>Klik untuk upload bukti transfer</p>
+                                <span>Format: JPG, PNG (max 2MB)</span>
+                            </label>
+                            <div class="preview" id="proofPreview"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentNote">Catatan (opsional):</label>
+                            <textarea id="paymentNote" placeholder="Tambahkan catatan jika perlu"></textarea>
+                        </div>
+                        <button class="btn-next" id="btnNext2">Konfirmasi</button>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="success-message">
+                            <i class="icon-check-circle"></i>
+                            <h4>Pembayaran Berhasil!</h4>
+                            <p>Terima kasih telah berbelanja di ZALLSTORE REAL. Detail akun akan dikirim setelah pembayaran diverifikasi.</p>
+                            <div class="order-summary">
+                                <h5>Ringkasan Pesanan:</h5>
+                                <div id="orderSummary"></div>
+                            </div>
+                            <button class="btn-close" id="btnCloseModal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content admin-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="admin-logo">
+                    <img src="assets/images/logo.png" alt="ZALLSTORE REAL">
+                </div>
+                <h3>Admin Login</h3>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminUsername">Username</label>
+                        <input type="text" id="adminUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" required>
+                    </div>
+                    <button type="submit" class="btn-login">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h3>Admin Dashboard</h3>
+            <button class="btn-logout" id="btnLogout">Logout</button>
+        </div>
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="accounts">Kelola Akun</button>
+            <button class="tab-btn" data-tab="orders">Pesanan</button>
+            <button class="tab-btn" data-tab="topups">Top-Up</button>
+        </div>
+        <div class="admin-content">
+            <div class="tab-content active" id="accountsTab">
+                <div class="admin-actions">
+                    <button class="btn-add" id="btnAddAccount">+ Tambah Akun</button>
+                    <div class="search-filter">
+                        <input type="text" placeholder="Cari akun...">
+                        <select id="adminGameFilter">
+                            <option value="all">Semua Game</option>
+                            <option value="freefire">Free Fire</option>
+                            <option value="mlbb">Mobile Legends</option>
+                            <option value="pubg">PUBG Mobile</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="account-form" id="accountForm">
+                    <h4>Tambah/Edit Akun</h4>
+                    <form id="adminAccountForm">
+                        <input type="hidden" id="accountId">
+                        <div class="form-group">
+                            <label for="inputGame">Game</label>
+                            <select id="inputGame" required>
+                                <option value="">Pilih Game</option>
+                                <option value="freefire">Free Fire</option>
+                                <option value="mlbb">Mobile Legends</option>
+                                <option value="pubg">PUBG Mobile</option>
+                                <option value="genshin">Genshin Impact</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputUsername">Username</label>
+                            <input type="text" id="inputUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword">Password</label>
+                            <input type="text" id="inputPassword">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputBind">Status Bind</label>
+                            <select id="inputBind" required>
+                                <option value="unbind">Unbind</option>
+                                <option value="bind">Bind</option>
+                                <option value="semi">Semi Bind</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputRank">Rank</label>
+                            <input type="text" id="inputRank" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPrice">Harga (IDR)</label>
+                            <input type="number" id="inputPrice" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputStatus">Status</label>
+                            <select id="inputStatus" required>
+                                <option value="available">Available</option>
+                                <option value="sold">Terjual</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputImage">Gambar Akun</label>
+                            <input type="file" id="inputImage" accept="image/*">
+                            <div class="image-preview" id="imagePreview"></div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save">Simpan</button>
+                            <button type="button" class="btn-cancel" id="btnCancelEdit">Batal</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="account-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Username</th>
+                                <th>Status</th>
+                                <th>Harga</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminAccountTable">
+                            <!-- Account data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-content" id="ordersTab">
+                <div class="order-filters">
+                    <select id="orderStatusFilter">
+                        <option value="all">Semua Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="paid">Dibayar</option>
+                        <option value="completed">Selesai</option>
+                        <option value="cancelled">Dibatalkan</option>
+                    </select>
+                    <input type="date" id="orderDateFilter">
+                </div>
+                <div class="order-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID Pesanan</th>
+                                <th>Game</th>
+                                <th>Username</th>
+                                <th>Tipe</th>
+                                <th>Harga</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminOrderTable">
+                            <!-- Order data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-content" id="topupsTab">
+                <div class="topup-filters">
+                    <select id="topupGameFilter">
+                        <option value="all">Semua Game</option>
+                        <option value="freefire">Free Fire</option>
+                        <option value="mlbb">Mobile Legends</option>
+                        <option value="pubg">PUBG Mobile</option>
+                    </select>
+                    <select id="topupStatusFilter">
+                        <option value="all">Semua Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Diproses</option>
+                        <option value="completed">Selesai</option>
+                        <option value="failed">Gagal</option>
+                    </select>
+                </div>
+                <div class="topup-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID Top-Up</th>
+                                <th>Game</th>
+                                <th>ID Player</th>
+                                <th>Nominal</th>
+                                <th>Metode</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTopupTable">
+                            <!-- Topup data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="assets/images/logo.png" alt="ZALLSTORE REAL">
+                        <span>ZALLSTORE <span class="highlight">REAL</span></span>
+                    </div>
+                    <p>Marketplace terpercaya untuk jual beli akun game premium dan top-up saldo game.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="icon-instagram"></i></a>
+                        <a href="#"><i class="icon-whatsapp"></i></a>
+                        <a href="#"><i class="icon-telegram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Layanan</h4>
+                    <ul>
+                        <li><a href="#">Jual Akun Game</a></li>
+                        <li><a href="#">Beli Akun Game</a></li>
+                        <li><a href="#">Sewa Akun Game</a></li>
+                        <li><a href="#">Top-Up Game</a></li>
+                        <li><a href="#">Tukar Akun</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Bantuan</h4>
+                    <ul>
+                        <li><a href="#">Cara Berbelanja</a></li>
+                        <li><a href="#">Panduan Pembayaran</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Hubungi Kami</h4>
+                    <div class="contact-info">
+                        <p><i class="icon-phone"></i> 0812-5392-576</p>
+                        <p><i class="icon-email"></i> support@zallstorereal.com</p>
+                        <p><i class="icon-clock"></i> Buka 24 Jam</p>
+                    </div>
+                    <div class="help-center">
+                        <button class="btn-help" id="btnHelpCenter">
+                            <i class="icon-help"></i> Help Center
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 ZALLSTORE REAL. All Rights Reserved.</p>
+                <a href="#" class="admin-login" id="adminLoginLink">🔐 Login Admin</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Help Center Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content help-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <h3>Help Center</h3>
+                <div class="help-options">
+                    <div class="help-item">
+                        <i class="icon-chat"></i>
+                        <h4>Live Chat</h4>
+                        <p>Chat langsung dengan CS kami</p>
+                        <button class="btn-help-action" id="btnLiveChat">Mulai Chat</button>
+                    </div>
+                    <div class="help-item">
+                        <i class="icon-whatsapp"></i>
+                        <h4>WhatsApp</h4>
+                        <p>Hubungi via WhatsApp</p>
+                        <button class="btn-help-action" id="btnWhatsApp">0812-5392-576</button>
+                    </div>
+                    <div class="help-item">
+                        <i class="icon-email"></i>
+                        <h4>Email</h4>
+                        <p>Kirim email ke support kami</p>
+                        <button class="btn-help-action" id="btnEmail">support@zallstorereal.com</button>
+                    </div>
+                </div>
+                <div class="common-issues">
+                    <h4>Pertanyaan Umum</h4>
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <button class="accordion-btn">Bagaimana cara membeli akun?</button>
+                            <div class="accordion-content">
+                                <p>1. Pilih akun yang ingin dibeli dari daftar akun tersedia<br>
+                                2. Klik tombol "Beli Akun"<br>
+                                3. Ikuti instruksi pembayaran<br>
+                                4. Upload bukti transfer<br>
+                                5. Detail akun akan dikirim setelah pembayaran diverifikasi</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-btn">Apa perbedaan akun bind dan unbind?</button>
+                            <div class="accordion-content">
+                                <p>Akun unbind bisa diganti email/facebooknya, sedangkan akun bind tidak bisa diganti. 
+                                Akun bind biasanya lebih murah karena tidak bisa diganti pemiliknya.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-btn">Berapa lama proses top-up?</button>
+                            <div class="accordion-content">
+                                <p>Proses top-up biasanya memakan waktu 5-30 menit setelah pembayaran diverifikasi. 
+                                Untuk pembayaran di luar jam kerja, proses mungkin memakan waktu lebih lama.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
