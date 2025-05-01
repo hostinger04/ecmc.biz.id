@@ -1,0 +1,24 @@
+[
+    {
+        "id": "ORD-001",
+        "accountId": 3,
+        "game": "pubg",
+        "username": "pubgmaster",
+        "type": "buy",
+        "price": 1200000,
+        "status": "completed",
+        "date": "2023-05-15",
+        "buyer": "user123"
+    },
+    {
+        "id": "ORD-002",
+        "accountId": 1,
+        "game": "freefire",
+        "username": "proplayer123",
+        "type": "rent",
+        "price": 50000,
+        "status": "pending",
+        "date": "2023-05-18",
+        "buyer": "user456"
+    }
+]
