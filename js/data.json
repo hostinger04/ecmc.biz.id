@@ -1,0 +1,68 @@
+[
+    {
+        "id": 1,
+        "game": "freefire",
+        "username": "proplayer123",
+        "password": "secret123",
+        "bind": "unbind",
+        "rank": "Heroic",
+        "price": 500000,
+        "status": "available",
+        "image": "assets/images/freefire-account1.jpg"
+    },
+    {
+        "id": 2,
+        "game": "mlbb",
+        "username": "mlbbking",
+        "password": "mypassword",
+        "bind": "bind",
+        "rank": "Mythic Glory",
+        "price": 750000,
+        "status": "available",
+        "image": "assets/images/mlbb-account1.jpg"
+    },
+    {
+        "id": 3,
+        "game": "pubg",
+        "username": "pubgmaster",
+        "password": "pubg1234",
+        "bind": "semi",
+        "rank": "Conqueror",
+        "price": 1200000,
+        "status": "sold",
+        "image": "assets/images/pubg-account1.jpg"
+    },
+    {
+        "id": 4,
+        "game": "freefire",
+        "username": "ffpro2023",
+        "password": "firefree",
+        "bind": "unbind",
+        "rank": "Grandmaster",
+        "price": 350000,
+        "status": "available",
+        "image": "assets/images/freefire-account2.jpg"
+    },
+    {
+        "id": 5,
+        "game": "mlbb",
+        "username": "mllover",
+        "password": "mobilelegends",
+        "bind": "bind",
+        "rank": "Mythic",
+        "price": 450000,
+        "status": "available",
+        "image": "assets/images/mlbb-account2.jpg"
+    },
+    {
+        "id": 6,
+        "game": "genshin",
+        "username": "genshinpro",
+        "password": "teyvat",
+        "bind": "unbind",
+        "rank": "AR 55",
+        "price": 1500000,
+        "status": "available",
+        "image": "assets/images/genshin-account1.jpg"
+    }
+]
