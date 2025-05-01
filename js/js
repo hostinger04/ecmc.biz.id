@@ -1,0 +1,283 @@
+// Data Structure
+let accounts = [];
+let orders = [];
+let topups = [];
+let isAdmin = false;
+
+// DOM Elements
+const accountGrid = document.getElementById('accountGrid');
+const accountModal = document.getElementById('accountModal');
+const paymentModal = document.getElementById('paymentModal');
+const adminLoginModal = document.getElementById('adminLoginModal');
+const adminPanel = document.getElementById('adminPanel');
+const helpModal = document.getElementById('helpModal');
+const adminLoginLink = document.getElementById('adminLoginLink');
+const btnLogout = document.getElementById('btnLogout');
+const adminLoginForm = document.getElementById('adminLoginForm');
+const btnHelpCenter = document.getElementById('btnHelpCenter');
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    // Load data from JSON files
+    loadData();
+    
+    // Check if admin is logged in
+    checkAdminLogin();
+    
+    // Setup event listeners
+    setupEventListeners();
+    
+    // Hide preloader after 1.5 seconds
+    setTimeout(() => {
+        document.querySelector('.preloader').style.opacity = '0';
+        setTimeout(() => {
+            document.querySelector('.preloader').style.display = 'none';
+        }, 500);
+    }, 1500);
+});
+
+function loadData() {
+    // Load accounts data
+    fetch('js/data.json')
+        .then(response => response.json())
+        .then(data => {
+            accounts = data;
+            renderAccountCards(accounts);
+        })
+        .catch(error => console.error('Error loading accounts:', error));
+    
+    // Load orders data
+    fetch('js/pesanan.json')
+        .then(response => response.json())
+        .then(data => {
+            orders = data;
+        })
+        .catch(error => console.error('Error loading orders:', error));
+    
+    // Load topups data
+    fetch('js/topup.json')
+        .then(response => response.json())
+        .then(data => {
+            topups = data;
+        })
+        .catch(error => console.error('Error loading topups:', error));
+}
+
+function checkAdminLogin() {
+    const token = localStorage.getItem('adminToken');
+    if (token && token === 'loggedIn') {
+        isAdmin = true;
+        adminPanel.style.display = 'block';
+        setTimeout(() => {
+            adminPanel.classList.add('active');
+        }, 100);
+    }
+}
+
+function setupEventListeners() {
+    // Admin login link
+    adminLoginLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        adminLoginModal.style.display = 'block';
+    });
+    
+    // Admin login form
+    adminLoginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('adminUsername').value;
+        const password = document.getElementById('adminPassword').value;
+        
+        // Simple login check (in a real app, this would be server-side)
+        if (username === 'admin' && password === 'admin123') {
+            localStorage.setItem('adminToken', 'loggedIn');
+            isAdmin = true;
+            adminLoginModal.style.display = 'none';
+            adminPanel.style.display = 'block';
+            setTimeout(() => {
+                adminPanel.classList.add('active');
+            }, 100);
+        } else {
+            alert('Username atau password salah!');
+        }
+    });
+    
+    // Logout button
+    btnLogout.addEventListener('click', function() {
+        localStorage.removeItem('adminToken');
+        isAdmin = false;
+        adminPanel.classList.remove('active');
+        setTimeout(() => {
+            adminPanel.style.display = 'none';
+        }, 300);
+    });
+    
+    // Help center button
+    btnHelpCenter.addEventListener('click', function() {
+        helpModal.style.display = 'block';
+    });
+    
+    // Close modals when clicking the X button
+    document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.closest('.modal').style.display = 'none';
+        });
+    });
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal')) {
+            e.target.style.display = 'none';
+        }
+    });
+    
+    // Accordion functionality for help modal
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        });
+    });
+    
+    // Payment steps
+    document.getElementById('btnNext1').addEventListener('click', function() {
+        document.getElementById('step1').classList.remove('active');
+        document.getElementById('step2').classList.add('active');
+    });
+    
+    document.getElementById('btnNext2').addEventListener('click', function() {
+        // In a real app, you would save the payment proof here
+        document.getElementById('step2').classList.remove('active');
+        document.getElementById('step3').classList.add('active');
+    });
+    
+    document.getElementById('btnCloseModal').addEventListener('click', function() {
+        paymentModal.style.display = 'none';
+        // Reset steps
+        document.getElementById('step1').classList.add('active');
+        document.getElementById('step2').classList.remove('active');
+        document.getElementById('step3').classList.remove('active');
+    });
+    
+    // File upload preview
+    document.getElementById('paymentProof').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const preview = document.getElementById('proofPreview');
+                preview.innerHTML = `<img src="${event.target.result}" alt="Bukti Transfer">`;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+function renderAccountCards(accounts) {
+    accountGrid.innerHTML = '';
+    
+    accounts.forEach(account => {
+        const card = document.createElement('div');
+        card.className = 'account-card';
+        card.innerHTML = `
+            <img src="${account.image}" alt="${account.game} Account" class="account-image">
+            <div class="account-details">
+                <div class="account-game">
+                    <img src="assets/images/${account.game}-icon.png" alt="${account.game}">
+                    <span>${account.game.toUpperCase()}</span>
+                </div>
+                <div class="account-username">${account.username}</div>
+                <div class="account-bind ${account.bind === 'bind' ? 'bind' : 'unbind'}">
+                    ${account.bind === 'bind' ? '🔐 Bind' : '🔓 Unbind'}
+                </div>
+                <div class="account-price">Rp${account.price.toLocaleString('id-ID')}</div>
+                <div class="account-status ${account.status === 'available' ? 'status-available' : 'status-sold'}">
+                    ${account.status === 'available' ? 'Available' : 'Terjual'}
+                </div>
+            </div>
+        `;
+        
+        card.addEventListener('click', () => openAccountModal(account));
+        accountGrid.appendChild(card);
+    });
+}
+
+function openAccountModal(account) {
+    document.getElementById('modalAccountImage').src = account.image;
+    document.getElementById('modalAccountName').textContent = `${account.game.toUpperCase()} Account`;
+    document.getElementById('modalGame').textContent = account.game.toUpperCase();
+    document.getElementById('modalUsername').textContent = account.username;
+    document.getElementById('modalBind').textContent = account.bind === 'bind' ? '🔐 Bind' : '🔓 Unbind';
+    document.getElementById('modalRank').textContent = account.rank || '-';
+    document.getElementById('modalPrice').textContent = `Rp${account.price.toLocaleString('id-ID')}`;
+    document.getElementById('modalStatus').textContent = account.status === 'available' ? 'Available' : 'Terjual';
+    document.getElementById('modalStatus').className = `detail-value ${account.status === 'available' ? 'status-available' : 'status-sold'}`;
+    
+    // Set up action buttons
+    const btnBuy = document.getElementById('btnBuy');
+    const btnRent = document.getElementById('btnRent');
+    const btnTopup = document.getElementById('btnTopup');
+    
+    btnBuy.onclick = () => initiatePurchase(account, 'buy');
+    btnRent.onclick = () => initiatePurchase(account, 'rent');
+    btnTopup.onclick = () => initiateTopup(account.game);
+    
+    // Disable buttons if account is sold
+    if (account.status === 'sold') {
+        btnBuy.disabled = true;
+        btnRent.disabled = true;
+        btnBuy.textContent = 'Terjual';
+        btnRent.textContent = 'Terjual';
+    } else {
+        btnBuy.disabled = false;
+        btnRent.disabled = false;
+        btnBuy.textContent = 'Beli Akun';
+        btnRent.textContent = 'Sewa Akun';
+    }
+    
+    accountModal.style.display = 'block';
+}
+
+function initiatePurchase(account, type) {
+    accountModal.style.display = 'none';
+    
+    // Set order summary
+    const orderSummary = document.getElementById('orderSummary');
+    orderSummary.innerHTML = `
+        <p><strong>Game:</strong> ${account.game.toUpperCase()}</p>
+        <p><strong>Username:</strong> ${account.username}</p>
+        <p><strong>Tipe:</strong> ${type === 'buy' ? 'Beli Akun' : 'Sewa Akun'}</p>
+        <p><strong>Harga:</strong> Rp${account.price.toLocaleString('id-ID')}</p>
+    `;
+    
+    paymentModal.style.display = 'block';
+}
+
+function initiateTopup(game) {
+    accountModal.style.display = 'none';
+    
+    // In a complete implementation, this would show a form for top-up details
+    alert(`Fitur top-up untuk ${game.toUpperCase()} akan segera tersedia!`);
+}
+
+// Admin panel functionality would be implemented here
+// Including adding, editing accounts, managing orders, etc.
+
+// Helper function to save data to JSON files (simulated)
+function saveDataToFile(filename, data) {
+    // In a real app, this would send data to a server
+    console.log(`Simulating save to ${filename}:`, data);
+    // For this demo, we'll just update the in-memory data
+    if (filename === 'data.json') {
+        accounts = data;
+    } else if (filename === 'pesanan.json') {
+        orders = data;
+    } else if (filename === 'topup.json') {
+        topups = data;
+    }
+}
